@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #1DB954;
+            color: white;
+            margin: 0;
+            padding: 0;
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .player {
+            margin: 20px auto;
+            padding: 20px;
+            width: 300px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+        }
+        .controls button {
+            margin: 5px;
+            padding: 10px;
+            background: #1DB954;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .controls button:hover {
+            background: #17a74b;
+        }
+        .playlist {
+            list-style: none;
+            padding: 0;
+        }
+        .playlist li {
+            cursor: pointer;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            color: white;
+        }
+        .playlist li:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>RhythmFlow</h1>
+    <input type="text" id="search" placeholder="Search music" onkeyup="filterSongs()">
+    <div class="player">
+        <audio id="audio" controls></audio>
+        <div class="controls">
+            <button onclick="playMusic()">Play</button>
+            <button onclick="pauseMusic()">Pause</button>
+            <button onclick="nextMusic()">Next</button>
+            <input type="range" id="volume" min="0" max="1" step="0.1" onchange="setVolume(this.value)">
+        </div>
+    </div>
+    <ul class="playlist" id="playlist">
+        <li onclick="playSelected('Namo Namo Shankara.mp3')">Namo Namo</li>
+        <li onclick="playSelected('Suniyan Suniyan.mp3')">Suniyan Suniyan</li>
+        <li onclick="playSelected('Tauba Tauba.mp3')">Tauba Tauba</li>
+        <li onclick="playSelected('Laal Ishq.mp3')">Laal Ishq</li>
+    </ul>
+    <script>
+        let currentIndex = 0;
+        const songs = ['Namo Namo Shankara.mp3', 'Suniyan Suniyan.mp3', 'Tauba Tauba.mp3','Laal Ishq.mp3'];
+        const audio = document.getElementById('audio');
+
+        function playMusic() { audio.play(); }
+        function pauseMusic() { audio.pause(); }
+        function setVolume(value) { audio.volume = value; }
+        function playSelected(song) { audio.src = song; audio.play(); }
+        function nextMusic() {
+            currentIndex = (currentIndex + 1) % songs.length;
+            playSelected(songs[currentIndex]);
+        }
+        function filterSongs() {
+            let filter = document.getElementById('search').value.toLowerCase();
+            let items = document.querySelectorAll('.playlist li');
+            items.forEach(item => {
+                item.style.display = item.textContent.toLowerCase().includes(filter) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
